@@ -1,0 +1,7 @@
+*.class
+*.jar
+*.gcloudconfig
+*.iml
+*.xml
+/.idea
+/Run
