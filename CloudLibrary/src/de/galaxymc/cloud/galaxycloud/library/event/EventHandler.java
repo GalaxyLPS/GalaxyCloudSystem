@@ -1,13 +1,9 @@
 package de.galaxymc.cloud.galaxycloud.library.event;
 
-import jdk.jfr.Event;
-
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.EventListener;
 
 public class EventHandler {
 

@@ -1,7 +1,7 @@
-package de.galaxymc.cloud.galaxycloud.library.server.settings;
+package de.galaxymc.cloud.galaxycloud.library.server.minecraft.settings;
 
-import de.galaxymc.cloud.galaxycloud.library.server.MinecraftServerState;
-import de.galaxymc.cloud.galaxycloud.library.server.MinecraftServerType;
+import de.galaxymc.cloud.galaxycloud.library.server.group.MinecraftGroup;
+import de.galaxymc.cloud.galaxycloud.library.server.minecraft.state.MinecraftServerState;
 
 public class MinecraftServerSettings {
 
@@ -12,15 +12,14 @@ public class MinecraftServerSettings {
     private final int maxRam;
     private final long startup;
     private String motd;
-    private final MinecraftServerType serverType;
     private MinecraftServerState serverState;
+    private MinecraftGroup group;
 
-    public MinecraftServerSettings(int port, int maxPlayers, int maxRam, String motd, MinecraftServerType type) {
+    public MinecraftServerSettings(int port, int maxPlayers, int maxRam, String motd) {
         this.port = port;
         this.maxPlayers = maxPlayers;
         this.maxRam = maxRam;
         this.motd = motd;
-        this.serverType = type;
         this.currentPlayers = 0;
         this.serverState = MinecraftServerState.LOBBY;
         this.startup = System.currentTimeMillis();
@@ -71,8 +70,8 @@ public class MinecraftServerSettings {
         this.motd = motd;
     }
 
-    public MinecraftServerType getServerType() {
-        return serverType;
+    public MinecraftGroup getGroup() {
+        return group;
     }
 
     public MinecraftServerState getServerState() {

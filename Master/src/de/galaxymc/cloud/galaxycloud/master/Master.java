@@ -7,6 +7,7 @@ import de.galaxymc.cloud.galaxycloud.library.network.server.settings.CloudServer
 import de.galaxymc.cloud.galaxycloud.master.command.CommandHandler;
 import de.galaxymc.cloud.galaxycloud.master.event.MasterListener;
 import de.galaxymc.cloud.galaxycloud.master.file.SettingsFile;
+import de.galaxymc.cloud.galaxycloud.master.settings.MasterSettings;
 
 public class Master {
 
@@ -16,6 +17,8 @@ public class Master {
     private CloudServer server;
     private CloudServerSettings serverSettings;
 
+    private MasterSettings settings;
+
 
     public Master() {
         commandHandler = new CommandHandler();
@@ -23,7 +26,9 @@ public class Master {
         settingsFile = new SettingsFile();
         settingsFile.load();
 
-        serverSettings = new CloudServerSettings(settingsFile.getSettings().getPort(), 10);
+        settings = settingsFile.getSettings();
+
+        serverSettings = new CloudServerSettings(settings.getPort(), 10);
         server = new CloudServer(serverSettings);
     }
 
@@ -49,8 +54,8 @@ public class Master {
                 "                                                                                           y:::::y                                                                                                                     \n" +
                 "                                                                                          y:::::y                                                                                                                      \n" +
                 "                                                                                         y:::::y                                                                                                                       \n" +
-                "Author: GalaxyLPS                                                                       y:::::y                                                                                                                        \n" +
-                "Website: galaxycloud.de                                                               yyyyyyy                                                                                                                         \n" +
+                " Author: GalaxyLPS                                                                      y:::::y                                                                                                                        \n" +
+                " Website: galaxycloud.de                                                              yyyyyyy                                                                                                                         \n" +
                 "                                                                                                                                                                                                                       \n" +
                 "Disclaimer: You are not allowed to share or edit GalaxyCloud(Master, Wrapper etc) in any way.\n\n");
         CloudLibrary.eventHandler.addEventListener(new MasterListener());
@@ -74,4 +79,15 @@ public class Master {
         server.close();
     }
 
+    public CloudServerSettings getServerSettings() {
+        return serverSettings;
+    }
+
+    public SettingsFile getSettingsFile() {
+        return settingsFile;
+    }
+
+    public MasterSettings getSettings() {
+        return settings;
+    }
 }

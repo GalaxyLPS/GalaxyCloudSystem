@@ -1,7 +1,5 @@
 package de.galaxymc.cloud.galaxycloud.library.registry;
 
-import de.galaxymc.cloud.galaxycloud.library.event.CloudListener;
-
 public abstract class CloudRegistry<T extends CloudRegistryElement> {
 
     protected CloudRegistryElement[] values;

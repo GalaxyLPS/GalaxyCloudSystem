@@ -1,15 +1,11 @@
 package de.galaxymc.cloud.galaxycloud.master.command.base;
 
-import de.galaxymc.cloud.galaxycloud.master.command.argument.CommandArgument;
-
-import java.util.ArrayList;
-
 public interface CommandBase {
 
-    public void execute(ArrayList<CommandArgument> arguments);
+    void execute(String[] arguments);
 
-    public String getCommand();
+    String getCommand();
 
-    public String getHelp();
+    String getHelp();
 
 }

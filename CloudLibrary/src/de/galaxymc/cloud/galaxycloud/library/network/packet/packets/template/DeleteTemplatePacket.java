@@ -1,8 +1,9 @@
 package de.galaxymc.cloud.galaxycloud.library.network.packet.packets.template;
 
-import de.galaxymc.cloud.galaxycloud.library.server.template.MinecraftTemplate;
+import de.galaxymc.cloud.galaxycloud.library.network.packet.Packet;
+import de.galaxymc.cloud.galaxycloud.library.server.minecraft.template.MinecraftTemplate;
 
-public class DeleteTemplatePacket {
+public class DeleteTemplatePacket extends Packet {
 
     private MinecraftTemplate template;
 

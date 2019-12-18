@@ -1,12 +1,10 @@
 package de.galaxymc.cloud.galaxycloud.master.command;
 
 import de.galaxymc.cloud.galaxycloud.library.message.Listenable;
-import de.galaxymc.cloud.galaxycloud.master.command.argument.CommandArgument;
 import de.galaxymc.cloud.galaxycloud.master.command.base.CommandBase;
 import de.galaxymc.cloud.galaxycloud.master.command.commands.*;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,7 +14,7 @@ public class CommandHandler implements Listenable, Closeable {
 
     private boolean stop = false;
 
-    private ArrayList<CommandBase> commands = new ArrayList<CommandBase>();
+    private ArrayList<CommandBase> commands = new ArrayList<>();
 
     public CommandHandler() {
         addCommand(new HelpCommand());
@@ -34,15 +32,8 @@ public class CommandHandler implements Listenable, Closeable {
             while (!stop) {
                 String in = scan.nextLine();
                 String[] args = in.split(" ");
-                ArrayList<CommandArgument> arguments = new ArrayList<CommandArgument>();
-                for (String s : args) {
-                    if (s.contains("=")) {
-                        String key = s.split("=")[0];
-                        String value = s.replaceFirst(key + "=", "");
-                        arguments.add(new CommandArgument(key, value));
-                        System.out.println("argument");
-                    }
-                }
+                String[] arguments = new String[Math.abs(args.length - 1)]; // take absolute value, otherwise arguments could be initialized with negative length
+                System.arraycopy(args, 1, arguments, 0, arguments.length);
                 for (CommandBase c : commands) {
                     if (c.getCommand().equalsIgnoreCase(args[0])) {
                         c.execute(arguments);
@@ -55,7 +46,7 @@ public class CommandHandler implements Listenable, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         stop = true;
     }
 

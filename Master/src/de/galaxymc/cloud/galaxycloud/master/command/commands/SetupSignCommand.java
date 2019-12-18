@@ -1,14 +1,11 @@
 package de.galaxymc.cloud.galaxycloud.master.command.commands;
 
-import de.galaxymc.cloud.galaxycloud.master.command.argument.CommandArgument;
 import de.galaxymc.cloud.galaxycloud.master.command.base.CommandBase;
-
-import java.util.ArrayList;
 
 public class SetupSignCommand  implements CommandBase {
 
     @Override
-    public void execute(ArrayList<CommandArgument> arguments) {
+    public void execute(String[] arguments) {
 
     }
 

@@ -1,4 +1,4 @@
-package de.galaxymc.cloud.galaxycloud.library.server.template;
+package de.galaxymc.cloud.galaxycloud.library.server.minecraft.template;
 
 import de.galaxymc.cloud.galaxycloud.library.registry.CloudRegistry;
 import de.galaxymc.cloud.galaxycloud.library.registry.CloudRegistryElement;

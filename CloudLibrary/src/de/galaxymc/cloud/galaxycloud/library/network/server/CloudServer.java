@@ -64,4 +64,12 @@ public class CloudServer implements Closeable {
             e.printStackTrace();
         }
     }
+
+    public CloudServerType getServerType() {
+        return serverType;
+    }
+
+    public CloudServerSettings getServerSettings() {
+        return serverSettings;
+    }
 }

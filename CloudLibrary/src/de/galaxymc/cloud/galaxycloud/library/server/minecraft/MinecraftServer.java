@@ -1,17 +1,16 @@
-package de.galaxymc.cloud.galaxycloud.library.server;
+package de.galaxymc.cloud.galaxycloud.library.server.minecraft;
 
 import de.galaxymc.cloud.galaxycloud.library.download.DownloadJarType;
 import de.galaxymc.cloud.galaxycloud.library.download.DownloadManager;
 import de.galaxymc.cloud.galaxycloud.library.log.Loggable;
 import de.galaxymc.cloud.galaxycloud.library.message.Listenable;
 import de.galaxymc.cloud.galaxycloud.library.message.StringWriteable;
-import de.galaxymc.cloud.galaxycloud.library.message.Writable;
+import de.galaxymc.cloud.galaxycloud.library.network.client.CloudClient;
+import de.galaxymc.cloud.galaxycloud.library.network.packet.packets.minecraft.log.MinecraftConsoleLogPacket;
 import de.galaxymc.cloud.galaxycloud.library.registry.CloudRegistryElement;
-import de.galaxymc.cloud.galaxycloud.library.server.settings.MinecraftServerSettings;
-import de.galaxymc.cloud.galaxycloud.library.server.template.MinecraftTemplate;
+import de.galaxymc.cloud.galaxycloud.library.server.minecraft.settings.MinecraftServerSettings;
 
 import java.io.*;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -19,22 +18,23 @@ import java.util.ArrayList;
 public final class MinecraftServer implements CloudRegistryElement, Closeable, StringWriteable, Listenable, Loggable {
 
     private transient boolean stop = false;
-    File folder;
-    BufferedWriter writer;
-    BufferedReader reader;
-    BufferedReader errorReader;
+    private File folder;
+    private BufferedWriter writer;
+    private BufferedReader reader;
+    private BufferedReader errorReader;
+    private transient ArrayList<String> logs;
+    private MinecraftServerSettings serverSettings;
+    private CloudClient master;
+    private boolean printConsole = false;
 
-    transient ArrayList<String> logs;
-
-    MinecraftServerSettings serverSettings;
 
     public MinecraftServer(MinecraftServerSettings serverSettings, File serverJar) {
         try {
             this.serverSettings = serverSettings;
-            folder = new File("./Wrapper/Temp/Servers/" + serverSettings.getServerType().name() + "/" + serverSettings.getPort());
+            folder = new File("./Wrapper/Temp/Servers/Minecraft/" + serverSettings.getGroup() + "/" + serverSettings.getPort());
             folder.mkdirs();
             if (serverJar == null) serverJar = DownloadManager.downloadJar(DownloadJarType.SPIGOT_1_8);
-            if (!serverJar.exists()) serverJar = DownloadManager.downloadJar(DownloadJarType.SPIGOT_1_8);
+            if (!serverJar.exists()) serverJar.createNewFile();
             Files.copy(Paths.get(serverJar.toURI()), Paths.get(new File(folder + "/spigot.jar").toURI()));
             logs = new ArrayList<>();
         } catch (IOException e) {
@@ -47,7 +47,7 @@ public final class MinecraftServer implements CloudRegistryElement, Closeable, S
             folder.mkdirs();
             createResources();
             Runtime r = Runtime.getRuntime();
-            Process process = r.exec("java -jar spigot", null, folder);
+            Process process = r.exec("java -jar spigot.jar", null, folder);
             writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
             reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
@@ -71,8 +71,6 @@ public final class MinecraftServer implements CloudRegistryElement, Closeable, S
             e.printStackTrace();
         }
     }
-
-    
 
     private void createResources() {
         File plugins = new File(folder + "/plugins");
@@ -148,8 +146,11 @@ public final class MinecraftServer implements CloudRegistryElement, Closeable, S
         Thread t = new Thread(() -> {
             try {
                 while (!stop) {
-                    String s = reader.readLine();
-                    log(s);
+                    String in = reader.readLine();
+                    if (in == null) continue;
+                    log(in);
+                    if (printConsole)
+                        master.write(new MinecraftConsoleLogPacket(in, this));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -158,8 +159,11 @@ public final class MinecraftServer implements CloudRegistryElement, Closeable, S
         Thread e = new Thread(() -> {
             try {
                 while (!stop) {
-                    String s = errorReader.readLine();
-                    log(s);
+                    String in = errorReader.readLine();
+                    if (in == null) continue;
+                    log(in);
+                    if (printConsole)
+                        master.write(new MinecraftConsoleLogPacket(in, this));
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();

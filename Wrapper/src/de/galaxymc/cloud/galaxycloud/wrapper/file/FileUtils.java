@@ -21,6 +21,7 @@ public class FileUtils {
                 e.printStackTrace();
             }
         }
+        file.delete();
     }
 
 }

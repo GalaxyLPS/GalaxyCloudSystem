@@ -1,4 +1,7 @@
 package de.galaxymc.cloud.galaxycloud.library.network.packet.packets.bungeecord;
 
-public class BungeecordStatusPacket {
+import de.galaxymc.cloud.galaxycloud.library.network.packet.Packet;
+
+public class BungeecordStatusPacket extends Packet {
+
 }

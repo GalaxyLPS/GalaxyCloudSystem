@@ -3,6 +3,7 @@ package de.galaxymc.cloud.galaxycloud.library.network.client;
 
 import de.galaxymc.cloud.galaxycloud.library.CloudLibrary;
 import de.galaxymc.cloud.galaxycloud.library.event.events.PacketReceiveEvent;
+import de.galaxymc.cloud.galaxycloud.library.logger.Logger;
 import de.galaxymc.cloud.galaxycloud.library.message.Listenable;
 import de.galaxymc.cloud.galaxycloud.library.message.Writable;
 import de.galaxymc.cloud.galaxycloud.library.network.client.settings.CloudClientSettings;
@@ -34,7 +35,9 @@ public final class CloudClient implements Closeable, Listenable, Writable {
             this.stop = false;
             this.settings = settings;
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.log("Could not reach server! Client shutting down. Restart to try again!");
+            stop = true;
+            connected = false;
         }
     }
 
@@ -63,8 +66,9 @@ public final class CloudClient implements Closeable, Listenable, Writable {
 
     @Override
     public void write(Packet packet) {
-        while (!connected) ;
-        while (objectOutputStream == null) ;
+        if (!connected) return;
+        if (objectInputStream == null) return;
+        if (stop) return;
         try {
             objectOutputStream.writeObject(packet);
             objectOutputStream.flush();
@@ -81,7 +85,6 @@ public final class CloudClient implements Closeable, Listenable, Writable {
                 try {
                     if (objectInputStream == null) continue;
                     if (!connected) continue;
-                    if (stop) continue;
                     try {
                         Object in = objectInputStream.readObject();
                         if (in instanceof Packet) {
@@ -100,6 +103,10 @@ public final class CloudClient implements Closeable, Listenable, Writable {
         });
         t.setName("CloudClientInputListening");
         t.start();
+    }
+
+    public boolean isConnected() {
+        return connected;
     }
 
     public boolean isActive() {

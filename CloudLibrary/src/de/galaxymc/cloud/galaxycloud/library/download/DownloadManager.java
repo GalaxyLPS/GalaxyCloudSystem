@@ -1,7 +1,8 @@
 package de.galaxymc.cloud.galaxycloud.library.download;
 
-import java.io.*;
-import java.net.MalformedURLException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -19,8 +20,6 @@ public class DownloadManager {
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             rbc.close();
             fos.close();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

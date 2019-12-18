@@ -5,8 +5,8 @@ import de.galaxymc.cloud.galaxycloud.library.exception.ExceptionHandleType;
 import de.galaxymc.cloud.galaxycloud.library.exception.ExceptionHandler;
 import de.galaxymc.cloud.galaxycloud.library.network.packet.PacketRegistry;
 import de.galaxymc.cloud.galaxycloud.library.server.group.MinecraftGroupRegistry;
-import de.galaxymc.cloud.galaxycloud.library.server.registry.MinecraftServerRegistry;
-import de.galaxymc.cloud.galaxycloud.library.server.template.MinecraftTemplateRegistry;
+import de.galaxymc.cloud.galaxycloud.library.server.minecraft.registry.MinecraftServerRegistry;
+import de.galaxymc.cloud.galaxycloud.library.server.minecraft.template.MinecraftTemplateRegistry;
 import de.galaxymc.cloud.galaxycloud.library.wrapper.CloudWrapperRegistry;
 
 public class CloudLibrary {

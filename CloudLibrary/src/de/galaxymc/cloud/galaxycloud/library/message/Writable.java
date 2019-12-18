@@ -4,6 +4,6 @@ import de.galaxymc.cloud.galaxycloud.library.network.packet.Packet;
 
 public interface Writable {
 
-    public void write(Packet p);
+    void write(Packet p);
 
 }

@@ -1,16 +1,16 @@
 package de.galaxymc.cloud.galaxycloud.wrapper.settings;
 
-import java.io.File;
+import de.galaxymc.cloud.galaxycloud.library.server.minecraft.modification.MinecraftModificationType;
 
 public class WrapperSettings {
 
     private int port;
     private int lowestPort;
-    private File serverJar;
+    private MinecraftModificationType modificationType;
 
-    public WrapperSettings(int port, int lowestPort, File serverJar) {
+    public WrapperSettings(int port, int lowestPort, MinecraftModificationType modificationType) {
         this.port = port;
-        this.serverJar = serverJar;
+        this.modificationType = modificationType;
         this.lowestPort = lowestPort;
     }
 
@@ -18,8 +18,8 @@ public class WrapperSettings {
         return port;
     }
 
-    public File getServerJar() {
-        return serverJar;
+    public MinecraftModificationType getModificationType() {
+        return modificationType;
     }
 
     public int getLowestPort() {
