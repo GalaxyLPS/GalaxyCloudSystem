@@ -4,6 +4,7 @@ import de.galaxymc.cloud.galaxycloud.library.CloudLibrary;
 import de.galaxymc.cloud.galaxycloud.library.logger.Logger;
 import de.galaxymc.cloud.galaxycloud.library.network.server.CloudServer;
 import de.galaxymc.cloud.galaxycloud.library.network.server.settings.CloudServerSettings;
+import de.galaxymc.cloud.galaxycloud.library.security.SecurityMethod;
 import de.galaxymc.cloud.galaxycloud.master.command.CommandHandler;
 import de.galaxymc.cloud.galaxycloud.master.event.MasterListener;
 import de.galaxymc.cloud.galaxycloud.master.file.SettingsFile;
@@ -18,6 +19,7 @@ public class Master {
     private CloudServerSettings serverSettings;
 
     private MasterSettings settings;
+    private SecurityMethod securityMethod;
 
 
     public Master() {
@@ -27,6 +29,8 @@ public class Master {
         settingsFile.load();
 
         settings = settingsFile.getSettings();
+
+        securityMethod = settings.getSecurityMethod();
 
         serverSettings = new CloudServerSettings(settings.getPort(), 10);
         server = new CloudServer(serverSettings);

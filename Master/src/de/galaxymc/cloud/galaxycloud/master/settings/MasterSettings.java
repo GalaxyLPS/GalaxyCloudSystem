@@ -38,4 +38,16 @@ public class MasterSettings {
     public int getWebPort() {
         return webPort;
     }
+
+    public MinecraftModificationType getModificationType() {
+        return modificationType;
+    }
+
+    public SecurityMethod getSecurityMethod() {
+        return securityMethod;
+    }
+
+    public Version getVersion() {
+        return version;
+    }
 }
