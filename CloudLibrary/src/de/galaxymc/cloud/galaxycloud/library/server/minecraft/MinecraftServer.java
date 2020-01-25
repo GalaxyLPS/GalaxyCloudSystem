@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public final class MinecraftServer implements CloudRegistryElement, Closeable, StringWriteable, Listenable, Loggable {
 
     private transient boolean stop = false;
+    private String uuid;
     private File folder;
     private BufferedWriter writer;
     private BufferedReader reader;
@@ -28,18 +29,21 @@ public final class MinecraftServer implements CloudRegistryElement, Closeable, S
     private boolean printConsole = false;
 
 
-    public MinecraftServer(MinecraftServerSettings serverSettings, File serverJar) {
+    public MinecraftServer(String uuid, MinecraftServerSettings serverSettings, File serverJar, CloudClient master) {
         try {
+            this.uuid = uuid;
             this.serverSettings = serverSettings;
-            folder = new File("./Wrapper/Temp/Servers/Minecraft/" + serverSettings.getGroup() + "/" + serverSettings.getPort());
+            folder = new File("./Wrapper/Temp/Servers/Minecraft/" + serverSettings.getGroup().getGroupType().name() + "/" + serverSettings.getPort());
             folder.mkdirs();
             if (serverJar == null) serverJar = DownloadManager.downloadJar(DownloadJarType.SPIGOT_1_8);
+            if (!serverJar.getParentFile().exists()) serverJar.getParentFile().mkdirs();
             if (!serverJar.exists()) serverJar.createNewFile();
             Files.copy(Paths.get(serverJar.toURI()), Paths.get(new File(folder + "/spigot.jar").toURI()));
             logs = new ArrayList<>();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.master = master;
     }
 
     public void start() {
@@ -149,8 +153,10 @@ public final class MinecraftServer implements CloudRegistryElement, Closeable, S
                     String in = reader.readLine();
                     if (in == null) continue;
                     log(in);
-                    if (printConsole)
+                    if (printConsole) {
+                        if (master == null) continue;
                         master.write(new MinecraftConsoleLogPacket(in, this));
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -162,8 +168,10 @@ public final class MinecraftServer implements CloudRegistryElement, Closeable, S
                     String in = errorReader.readLine();
                     if (in == null) continue;
                     log(in);
-                    if (printConsole)
+                    if (printConsole) {
+                        if (master == null) continue;
                         master.write(new MinecraftConsoleLogPacket(in, this));
+                    }
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -178,5 +186,54 @@ public final class MinecraftServer implements CloudRegistryElement, Closeable, S
     @Override
     public void log(String log) {
         logs.add(log);
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public boolean isAlive() {
+        return !stop;
+    }
+
+    public boolean isStop() {
+        return stop;
+    }
+
+    public File getFolder() {
+        return folder;
+    }
+
+    public BufferedWriter getWriter() {
+        return writer;
+    }
+
+    public BufferedReader getReader() {
+        return reader;
+    }
+
+    public BufferedReader getErrorReader() {
+        return errorReader;
+    }
+
+    public ArrayList<String> getLogs() {
+        return logs;
+    }
+
+    public MinecraftServerSettings getServerSettings() {
+        return serverSettings;
+    }
+
+    public CloudClient getMaster() {
+        return master;
+    }
+
+    public boolean isPrintConsole() {
+        return printConsole;
+    }
+
+    @Override
+    public String getUUID() {
+        return uuid;
     }
 }

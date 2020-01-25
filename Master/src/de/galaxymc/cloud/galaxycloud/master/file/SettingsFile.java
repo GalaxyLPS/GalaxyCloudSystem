@@ -3,7 +3,7 @@ package de.galaxymc.cloud.galaxycloud.master.file;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import de.galaxymc.cloud.galaxycloud.library.data.file.CloudSettingsFile;
+import de.galaxymc.cloud.galaxycloud.library.data.file.CloudFile;
 import de.galaxymc.cloud.galaxycloud.library.security.SecurityMethod;
 import de.galaxymc.cloud.galaxycloud.library.server.minecraft.modification.MinecraftModificationType;
 import de.galaxymc.cloud.galaxycloud.library.server.minecraft.version.Version;
@@ -12,10 +12,10 @@ import de.galaxymc.cloud.galaxycloud.master.settings.MasterSettings;
 
 import java.util.ArrayList;
 
-public class SettingsFile extends CloudSettingsFile {
+public class SettingsFile extends CloudFile {
 
     public SettingsFile() {
-        destination = "./Master/Settings/settings.gcloudconfig";
+        super("./Master/Settings/settings.gcloudconfig");
         defaults = new JsonObject();
         JsonObject network = new JsonObject();
         network.addProperty("Port", "23355");
@@ -43,10 +43,10 @@ public class SettingsFile extends CloudSettingsFile {
 
     public MasterSettings getSettings() {
         load();
-        JsonObject network = settings.getAsJsonObject("Network");
-        JsonObject web = settings.getAsJsonObject("Web");
-        JsonObject minecraft = settings.getAsJsonObject("Minecraft");
-        JsonObject security = settings.getAsJsonObject("Security");
+        JsonObject network = content.getAsJsonObject("Network");
+        JsonObject web = content.getAsJsonObject("Web");
+        JsonObject minecraft = content.getAsJsonObject("Minecraft");
+        JsonObject security = content.getAsJsonObject("Security");
 
         int port = network.getAsJsonPrimitive("Port").getAsInt();
 

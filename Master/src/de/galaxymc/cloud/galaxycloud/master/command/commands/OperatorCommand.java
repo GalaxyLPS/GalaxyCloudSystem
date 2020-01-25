@@ -9,20 +9,26 @@ import java.util.ArrayList;
 
 public class OperatorCommand implements CommandBase {
 
+    Logger logger;
+
+    public OperatorCommand() {
+        this.logger = new Logger("OperatorCommand");
+    }
+
     @Override
     public void execute(String[] arguments) {
         if (arguments.length == 1) {
             if (arguments[0].equalsIgnoreCase("list")) {
                 ArrayList<Operator> operators = Master.instance.getSettings().getOperators();
                 for (Operator operator : operators) {
-                    Logger.log(operator.getName() + "[" + operator.getUuid() + "]");
+                    logger.info(operator.getName() + "[" + operator.getUuid() + "]");
                 }
             }
         } else if (arguments.length == 2) {
             if (arguments[0].equalsIgnoreCase("remove")) {
                 String identifier = arguments[0];
                 Master.instance.getSettings().getOperators().removeIf(operator -> identifier.equalsIgnoreCase(operator.getName()) || identifier.equalsIgnoreCase(operator.getUuid()));
-                Logger.log("Operator was removed!");
+                logger.info("Operator was removed!");
             }
         } else if (arguments.length == 3) {
             if (arguments[0].equalsIgnoreCase("add")) {
@@ -30,7 +36,7 @@ public class OperatorCommand implements CommandBase {
                 String uuid = arguments[2];
                 Operator o = new Operator(name, uuid);
                 Master.instance.getSettings().getOperators().add(o);
-                Logger.log("Operator added!");
+                logger.info("Operator added!");
             }
         }
     }

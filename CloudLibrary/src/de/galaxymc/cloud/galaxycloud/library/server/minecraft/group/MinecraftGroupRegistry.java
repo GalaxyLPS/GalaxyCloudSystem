@@ -1,4 +1,4 @@
-package de.galaxymc.cloud.galaxycloud.library.server.group;
+package de.galaxymc.cloud.galaxycloud.library.server.minecraft.group;
 
 import de.galaxymc.cloud.galaxycloud.library.registry.CloudRegistry;
 import de.galaxymc.cloud.galaxycloud.library.registry.CloudRegistryElement;
@@ -16,6 +16,5 @@ public class MinecraftGroupRegistry extends CloudRegistry<MinecraftGroup> {
         }
         return null;
     }
-
 
 }

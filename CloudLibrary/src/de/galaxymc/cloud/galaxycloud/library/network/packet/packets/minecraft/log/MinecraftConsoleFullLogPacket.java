@@ -1,21 +1,23 @@
 package de.galaxymc.cloud.galaxycloud.library.network.packet.packets.minecraft.log;
 
+import de.galaxymc.cloud.galaxycloud.library.console.ConsoleLog;
 import de.galaxymc.cloud.galaxycloud.library.network.packet.Packet;
 import de.galaxymc.cloud.galaxycloud.library.server.minecraft.MinecraftServer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MinecraftConsoleFullLogPacket extends Packet {
 
-    private String[] logs;
+    private ConsoleLog[] logs;
     private MinecraftServer server;
 
-    public MinecraftConsoleFullLogPacket(String[] logs, MinecraftServer server) {
+    public MinecraftConsoleFullLogPacket(ConsoleLog[] logs, MinecraftServer server) {
         this.logs = logs;
     }
 
-    public MinecraftConsoleFullLogPacket(ArrayList<String> logs, MinecraftServer server) {
-        String[] a = new String[logs.size()];
+    public MinecraftConsoleFullLogPacket(ArrayList<ConsoleLog> logs, MinecraftServer server) {
+        ConsoleLog[] a = new ConsoleLog[logs.size()];
         for (int i = 0; i < a.length; i++) {
             a[i] = logs.get(i);
         }
@@ -23,7 +25,7 @@ public class MinecraftConsoleFullLogPacket extends Packet {
     }
 
     public String[] getLogs() {
-        return logs;
+        return (String[]) Arrays.stream(logs).map(ConsoleLog::getLog).toArray();
     }
 
     public MinecraftServer getServer() {

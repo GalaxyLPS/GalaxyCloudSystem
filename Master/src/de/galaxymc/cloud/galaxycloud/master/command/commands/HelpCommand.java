@@ -6,19 +6,25 @@ import de.galaxymc.cloud.galaxycloud.master.command.base.CommandBase;
 
 public class HelpCommand implements CommandBase {
 
+    Logger logger;
+
+    public HelpCommand() {
+        logger = new Logger("HelpCommand");
+    }
+
     @Override
     public void execute(String[] arguments) {
         if (arguments.length == 0) {
-            Logger.log("Help for all commands:");
+            logger.info("Help for all commands:");
             for (CommandBase c : Master.instance.getCommandHandler().getCommands()) {
-                Logger.log("\t" + c.getCommand());
+                logger.info("\t" + c.getCommand());
             }
         } else if (arguments.length == 1) {
             String command = arguments[0];
-            Logger.log("Help for " + command + ":");
+            logger.info("Help for " + command + ":");
             for (CommandBase c : Master.instance.getCommandHandler().getCommands()) {
                 if (c.getCommand().equalsIgnoreCase(command)) {
-                    Logger.log("\t" + c.getCommand());
+                    logger.info("\t" + c.getCommand());
                 }
             }
         }

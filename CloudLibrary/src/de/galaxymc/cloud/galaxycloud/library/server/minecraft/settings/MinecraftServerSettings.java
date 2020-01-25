@@ -1,6 +1,6 @@
 package de.galaxymc.cloud.galaxycloud.library.server.minecraft.settings;
 
-import de.galaxymc.cloud.galaxycloud.library.server.group.MinecraftGroup;
+import de.galaxymc.cloud.galaxycloud.library.server.minecraft.group.MinecraftGroup;
 import de.galaxymc.cloud.galaxycloud.library.server.minecraft.state.MinecraftServerState;
 
 public class MinecraftServerSettings {
@@ -15,7 +15,7 @@ public class MinecraftServerSettings {
     private MinecraftServerState serverState;
     private MinecraftGroup group;
 
-    public MinecraftServerSettings(int port, int maxPlayers, int maxRam, String motd) {
+    public MinecraftServerSettings(MinecraftGroup group, int port, int maxPlayers, int maxRam, String motd) {
         this.port = port;
         this.maxPlayers = maxPlayers;
         this.maxRam = maxRam;
@@ -24,6 +24,7 @@ public class MinecraftServerSettings {
         this.serverState = MinecraftServerState.LOBBY;
         this.startup = System.currentTimeMillis();
         this.onlineMode = false;
+        this.group = group;
     }
 
     public long uptime() {

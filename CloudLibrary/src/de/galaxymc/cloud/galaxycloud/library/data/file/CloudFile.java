@@ -6,17 +6,20 @@ import com.google.gson.JsonObject;
 
 import java.io.*;
 
-public abstract class CloudSettingsFile {
+public abstract class CloudFile {
 
     private static final char SEPARATOR = '=';
 
-    protected JsonObject settings;
-    protected JsonObject defaults;
+    protected JsonObject content;
+    protected JsonObject defaults = new JsonObject();
 
     protected String destination;
 
-    public void
-    load() {
+    public CloudFile(String destination) {
+        this.destination = destination;
+    }
+
+    public void load() {
         try {
             File file = new File(destination);
             if (!file.exists()) {
@@ -29,7 +32,7 @@ public abstract class CloudSettingsFile {
                 json.append(in);
             }
             Gson gson = new Gson();
-            settings = gson.fromJson(json.toString(), JsonObject.class);
+            content = gson.fromJson(json.toString(), JsonObject.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,7 +62,7 @@ public abstract class CloudSettingsFile {
                 file.createNewFile();
             }
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String s = gson.toJson(settings);
+            String s = gson.toJson(content);
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(s);
             writer.flush();

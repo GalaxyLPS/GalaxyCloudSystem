@@ -20,8 +20,8 @@ public class FileUtils {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            file.delete();
         }
-        file.delete();
     }
 
 }

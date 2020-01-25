@@ -1,17 +1,16 @@
 package de.galaxymc.cloud.galaxycloud.library.network.packet.packets.template;
 
 import de.galaxymc.cloud.galaxycloud.library.network.packet.Packet;
-import de.galaxymc.cloud.galaxycloud.library.server.minecraft.template.MinecraftTemplate;
 
 public class DeleteTemplatePacket extends Packet {
 
-    private MinecraftTemplate template;
+    private String templateUuid;
 
-    public DeleteTemplatePacket(MinecraftTemplate template) {
-        this.template = template;
+    public DeleteTemplatePacket(String templateId) {
+        this.templateUuid = templateUuid;
     }
 
-    public MinecraftTemplate getTemplate() {
-        return template;
+    public String getTemplateUuid() {
+        return templateUuid;
     }
 }

@@ -2,27 +2,41 @@ package de.galaxymc.cloud.galaxycloud.master;
 
 import de.galaxymc.cloud.galaxycloud.library.CloudLibrary;
 import de.galaxymc.cloud.galaxycloud.library.logger.Logger;
+import de.galaxymc.cloud.galaxycloud.library.machine.MachineInformation;
 import de.galaxymc.cloud.galaxycloud.library.network.server.CloudServer;
 import de.galaxymc.cloud.galaxycloud.library.network.server.settings.CloudServerSettings;
 import de.galaxymc.cloud.galaxycloud.library.security.SecurityMethod;
 import de.galaxymc.cloud.galaxycloud.master.command.CommandHandler;
 import de.galaxymc.cloud.galaxycloud.master.event.MasterListener;
+import de.galaxymc.cloud.galaxycloud.master.file.GroupsFile;
 import de.galaxymc.cloud.galaxycloud.master.file.SettingsFile;
+import de.galaxymc.cloud.galaxycloud.master.group.GroupsManager;
 import de.galaxymc.cloud.galaxycloud.master.settings.MasterSettings;
 
 public class Master {
 
     private CommandHandler commandHandler;
+
     private SettingsFile settingsFile;
+    private MasterSettings settings;
 
     private CloudServer server;
     private CloudServerSettings serverSettings;
 
-    private MasterSettings settings;
+
     private SecurityMethod securityMethod;
 
+    private GroupsManager groupsManager;
+    private GroupsFile groupsFile;
+    private Logger logger;
 
     public Master() {
+        logger = new Logger("Master");
+        Logger.logger.info("Startup...");
+        logger.fatal("Fatal test output");
+        logger.debug("Operating System: " + MachineInformation.operatingSystem);
+        logger.debug("Cloud Version: " + CloudLibrary.VERSION);
+
         commandHandler = new CommandHandler();
 
         settingsFile = new SettingsFile();
@@ -34,10 +48,16 @@ public class Master {
 
         serverSettings = new CloudServerSettings(settings.getPort(), 10);
         server = new CloudServer(serverSettings);
+
+
+        groupsFile = new GroupsFile();
+        groupsFile.load();
+        groupsManager = new GroupsManager();
+
     }
 
     public void init() {
-        Logger.log("                                                                                                                                                                                                                       \n" +
+        logger.info("                                                                                                                                                                                                                       \n" +
                 "                                                                                                                                                                                                                       \n" +
                 "        GGGGGGGGGGGGG                  lllllll                                                                       CCCCCCCCCCCCCLLLLLLLLLLL                  OOOOOOOOO     UUUUUUUU     UUUUUUUUDDDDDDDDDDDDD        \n" +
                 "     GGG::::::::::::G                  l:::::l                                                                    CCC::::::::::::CL:::::::::L                OO:::::::::OO   U::::::U     U::::::UD::::::::::::DDD     \n" +

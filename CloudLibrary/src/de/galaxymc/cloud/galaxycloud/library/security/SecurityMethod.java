@@ -139,6 +139,7 @@ public enum SecurityMethod {
             case "disabled":
             case "disable":
             case "off":
+            case "none":
                 return DISABLED;
             case "rsa":
                 return RSA;
@@ -155,4 +156,7 @@ public enum SecurityMethod {
                 return AES;
         }
     }
+
+    public static final SecurityMethod defaultMethod = DISABLED;
+
 }

@@ -5,7 +5,7 @@ import de.galaxymc.cloud.galaxycloud.library.server.minecraft.settings.Minecraft
 
 public class MinecraftServerStatusPacket extends Packet {
 
-    private MinecraftServerSettings serverSettings;
+    private final MinecraftServerSettings serverSettings;
 
     public MinecraftServerStatusPacket(MinecraftServerSettings serverSettings) {
         this.serverSettings = serverSettings;
