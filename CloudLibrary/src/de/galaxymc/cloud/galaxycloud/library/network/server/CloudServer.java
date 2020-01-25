@@ -2,6 +2,7 @@ package de.galaxymc.cloud.galaxycloud.library.network.server;
 
 import de.galaxymc.cloud.galaxycloud.library.CloudLibrary;
 import de.galaxymc.cloud.galaxycloud.library.exception.exceptions.CloudServerInitException;
+import de.galaxymc.cloud.galaxycloud.library.logger.Logger;
 import de.galaxymc.cloud.galaxycloud.library.network.client.CloudClient;
 import de.galaxymc.cloud.galaxycloud.library.network.server.settings.CloudServerSettings;
 import de.galaxymc.cloud.galaxycloud.library.network.server.type.CloudServerType;
@@ -17,7 +18,7 @@ public class CloudServer implements Closeable {
     private CloudServerSettings serverSettings;
     private CloudClient[] clients;
     private boolean stop = false;
-
+    private Logger logger;
 
     public CloudServer(CloudServerSettings serverSettings) {
         this.serverSettings = serverSettings;
@@ -39,6 +40,7 @@ public class CloudServer implements Closeable {
                             clients[index] = new CloudClient(socket.accept());
                             clients[index].bindStreams();
                             clients[index].listen();
+                            logger.debug("Connecting to " + clients[index].getSettings().ip + ":" + clients[index].getSettings().port);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
