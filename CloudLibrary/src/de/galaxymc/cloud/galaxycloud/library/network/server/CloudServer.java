@@ -30,7 +30,7 @@ public class CloudServer implements Closeable {
         serverType = CloudServerType.MASTER;
     }
 
-    public void begin() {
+    public void open() {
         Thread t = new Thread(() -> {
             while (!stop) {
                 for (int index = 0; index < clients.length; index++) {

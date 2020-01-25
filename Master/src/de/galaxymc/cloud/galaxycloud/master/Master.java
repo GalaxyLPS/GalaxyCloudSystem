@@ -84,7 +84,7 @@ public class Master {
                 "Disclaimer: You are not allowed to share or edit GalaxyCloud(Master, Wrapper etc) in any way.\n\n");
         CloudLibrary.eventHandler.addEventListener(new MasterListener());
         commandHandler.listen();
-        server.begin();
+        server.open();
     }
 
 
